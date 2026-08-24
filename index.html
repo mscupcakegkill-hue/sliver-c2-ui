@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sliver C2 UI - Modern Interface</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-terminal"></i> Sliver C2 UI</h1>
+            <p>Modern web interface for the powerful Sliver C2 framework</p>
+            <div class="backend-status offline" id="backend-status">Backend Offline</div>
+        </header>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <nav>
+                    <ul>
+                        <li class="active" data-tab="server"><i class="fas fa-server"></i> Server Management</li>
+                        <li data-tab="client"><i class="fas fa-laptop"></i> Client Connection</li>
+                        <li data-tab="commands"><i class="fas fa-code"></i> Commands</li>
+                        <li data-tab="sessions"><i class="fas fa-network-wired"></i> Sessions</li>
+                        <li data-tab="settings"><i class="fas fa-cog"></i> Settings</li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="content-area">
+                <!-- Server Management Tab -->
+                <div class="tab-content active" id="server-tab">
+                    <h2><i class="fas fa-server"></i> Server Management</h2>
+                    <div class="card">
+                        <h3>Server Status</h3>
+                        <div class="status-indicator">
+                            <span class="status offline">Offline</span>
+                            <button id="start-server" class="btn primary">Start Server</button>
+                            <button id="stop-server" class="btn danger" disabled>Stop Server</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Server Configuration</h3>
+                        <form id="server-config">
+                            <div class="form-group">
+                                <label for="listen-address">Listen Address</label>
+                                <input type="text" id="listen-address" value="0.0.0.0:8888" placeholder="IP:Port">
+                            </div>
+                            <div class="form-group">
+                                <label for="cert-path">Certificate Path (Optional)</label>
+                                <input type="text" id="cert-path" placeholder="Path to certificate">
+                            </div>
+                            <div class="form-group">
+                                <label for="key-path">Key Path (Optional)</label>
+                                <input type="text" id="key-path" placeholder="Path to private key">
+                            </div>
+                            <button type="submit" class="btn primary">Apply Configuration</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Client Connection Tab -->
+                <div class="tab-content" id="client-tab">
+                    <h2><i class="fas fa-laptop"></i> Client Connection</h2>
+                    <div class="card">
+                        <h3>Connection Status</h3>
+                        <div class="status-indicator">
+                            <span class="status disconnected">Disconnected</span>
+                            <button id="connect-client" class="btn primary">Connect</button>
+                            <button id="disconnect-client" class="btn danger" disabled>Disconnect</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Connection Details</h3>
+                        <form id="client-config">
+                            <div class="form-group">
+                                <label for="server-address">Server Address</label>
+                                <input type="text" id="server-address" value="127.0.0.1:8888" placeholder="Server IP:Port">
+                            </div>
+                            <div class="form-group">
+                                <label for="operator-name">Operator Name</label>
+                                <input type="text" id="operator-name" value="default" placeholder="Your operator name">
+                            </div>
+                            <div class="form-group">
+                                <label for="config-file">Config File Path (Optional)</label>
+                                <input type="text" id="config-file" placeholder="Path to config file">
+                            </div>
+                            <button type="submit" class="btn primary">Save Connection</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Commands Tab -->
+                <div class="tab-content" id="commands-tab">
+                    <h2><i class="fas fa-code"></i> Commands</h2>
+                    <div class="card">
+                        <h3>Execute Command</h3>
+                        <div class="command-input">
+                            <input type="text" id="command-input" placeholder="Enter Sliver command...">
+                            <button id="execute-command" class="btn primary">Execute</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Command Output</h3>
+                        <div class="output-container">
+                            <pre id="command-output">Ready to execute commands...</pre>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Common Commands</h3>
+                        <div class="quick-commands">
+                            <button class="btn secondary quick-cmd" data-cmd="help">Help</button>
+                            <button class="btn secondary quick-cmd" data-cmd="sessions">Sessions</button>
+                            <button class="btn secondary quick-cmd" data-cmd="jobs">Jobs</button>
+                            <button class="btn secondary quick-cmd" data-cmd="beacons">Beacons</button>
+                            <button class="btn secondary quick-cmd" data-cmd="implants">Implants</button>
+                            <button class="btn secondary quick-cmd" data-cmd="operators">Operators</button>
+                            <button class="btn secondary quick-cmd" data-cmd="generate --os windows --arch amd64">Generate Windows Implant</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sessions Tab -->
+                <div class="tab-content" id="sessions-tab">
+                    <h2><i class="fas fa-network-wired"></i> Active Sessions</h2>
+                    <div class="card">
+                        <div class="table-container">
+                            <table id="sessions-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Hostname</th>
+                                        <th>IP Address</th>
+                                        <th>OS</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="6" class="no-data">No active sessions</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div class="tab-content" id="settings-tab">
+                    <h2><i class="fas fa-cog"></i> Settings</h2>
+                    <div class="card">
+                        <h3>UI Preferences</h3>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="dark-mode"> Dark Mode
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="auto-refresh"> Auto-refresh Sessions
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="refresh-interval">Refresh Interval (seconds)</label>
+                            <input type="number" id="refresh-interval" min="1" max="60" value="5">
+                        </div>
+                        <button id="save-settings" class="btn primary">Save Settings</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>About</h3>
+                        <p><strong>Sliver C2 UI v1.0</strong></p>
+                        <p>A modern web interface for the Sliver C2 penetration testing framework.</p>
+                        <p>This UI provides a user-friendly way to interact with Sliver's powerful capabilities.</p>
+                        <p><i class="fas fa-exclamation-circle"></i> <strong>Note:</strong> This tool is for authorized security testing only.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Sliver C2 UI - Making penetration testing more accessible</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
